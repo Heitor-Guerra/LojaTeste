@@ -42,22 +42,22 @@ public class ItemsController {
   }
 
   @PutMapping("/{id}")
-  public ResponseEntity<String> update(@PathVariable Long id, @RequestBody @Valid ItemsDto itemsDto) {
+  public ResponseEntity<Object> update(@PathVariable Long id, @RequestBody @Valid ItemsDto itemsDto) {
     if(itemsService.findById(id).isEmpty()) {
       return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
     ItemsModel itemsModel = itemsService.findById(id).get();
     BeanUtils.copyProperties(itemsDto, itemsModel);
     itemsService.save(itemsModel);
-    return ResponseEntity.status(HttpStatus.OK).body("Updated");
+    return ResponseEntity.status(HttpStatus.OK).build();
   }
 
   @DeleteMapping("/{id}")
-  public ResponseEntity<String> delete(@PathVariable Long id) {
+  public ResponseEntity<Object> delete(@PathVariable Long id) {
     if(!itemsService.existsById(id)) {
       return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     }
     itemsService.delete(id);
-    return ResponseEntity.status(HttpStatus.OK).body("Deleted");
+    return ResponseEntity.status(HttpStatus.OK).build();
   }
 }

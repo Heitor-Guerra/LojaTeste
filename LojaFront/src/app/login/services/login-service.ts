@@ -1,8 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { LoginModel } from '../models/loginModel';
+import { LoginModel } from '../models/login-model';
 import { first, Observable, switchMap, tap } from 'rxjs';
-import { Login } from '../login';
 
 @Injectable({
   providedIn: 'root',

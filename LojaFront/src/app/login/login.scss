@@ -23,8 +23,12 @@ mat-card {
   align-items: center;
 }
 
+mat-card-content {
+  width: 80%;
+}
+
 mat-form-field {
-  width: 420px;
+  width: 100%;
 }
 
 button {
