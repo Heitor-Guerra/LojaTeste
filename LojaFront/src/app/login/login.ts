@@ -40,16 +40,34 @@ export class Login {
     password: new FormControl<string>("", { nonNullable: true }),
   });
 
+  private emailValid(): boolean {
+    if (this.formGroup.get("email")?.invalid) {
+      this.snackBar.open("O email não é válido", "", { duration: 5000 });
+      return false;
+    }
+    return true;
+  }
+
   onSubmit(): void {
+    if(!this.emailValid()) {
+      return;
+    }
     this.service.login(this.formGroup.value).subscribe({
-      next: () => this.router.navigate(["/items"]).then(),
-      error: () => this.snackBar.open("Invalid Email or password", "", {
-        duration: 5000,
-      }),
+      next: () => {
+        sessionStorage.setItem("isLogged", "true");
+        this.router.navigate(["/items"]).then();
+      },
+      error: () => {
+        this.snackBar.open("Credenciais Incorretas", "", { duration: 5000});
+        this.service.logout();
+      },
     });
   }
 
   onRegister(): void {
+    if (!this.emailValid()) {
+      return;
+    }
     this.service.save(this.formGroup.value).subscribe({
       next: (): void => {
         this.snackBar.open("Usuário registrado com Sucesso", "", {
@@ -66,20 +84,25 @@ export class Login {
   }
 
   onDelete(): void {
+    if (!this.emailValid()) {
+      return;
+    }
     const dialog: MatDialogRef<ConfirmDialog> = this.dialog.open(ConfirmDialog);
 
     dialog.afterClosed().subscribe((result: any): void => {
       if (result) {
-        this.service.delete(this.formGroup.value).subscribe({error: (err: string): void =>
-          {
+        this.service.delete(this.formGroup.value).subscribe({
+          next: (): void => {
+            this.snackBar.open('Usuário deletado com Sucesso', '', {
+              duration: 5000,
+            });
+          },
+          error: (err: string): void => {
             console.log(err);
             this.snackBar.open("Credenciais Incorretas", "", {
               duration: 5000,
             });
           },
-        });
-        this.snackBar.open("Usuário deletado com Sucesso", "", {
-          duration: 5000,
         });
       }
     });

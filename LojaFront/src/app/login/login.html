@@ -10,7 +10,7 @@
           <mat-form-field>
             <mat-label>Email</mat-label>
             <input matInput formControlName="email" placeholder="pat@example.com">
-            @if (formGroup.get('email')?.invalid) {
+            @if (formGroup.get("email")?.invalid) {
               <mat-error>{{errorMessage()}}</mat-error>
             }
           </mat-form-field>

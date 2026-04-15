@@ -8,6 +8,9 @@
 <!-- * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * -->
 
 <mat-toolbar>
-  Loja
+  <span>Loja</span>
+  @if(isLogged()) {
+    <button matButton="tonal" (click)="logout()">Logout</button>
+  }
 </mat-toolbar>
 <router-outlet />
